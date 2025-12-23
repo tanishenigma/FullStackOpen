@@ -34,8 +34,26 @@ const removeBlog = async (req, res, next) => {
   }
 };
 
+const updateBlog = async (req, res, next) => {
+  const body = req.body;
+  const blogData = {
+    title: body.title,
+    content: body.content,
+    meta: body.meta,
+  };
+  try {
+    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, {
+      new: true,
+    });
+    res.json(updatedBlog);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getBlogs,
   createBlogs,
   removeBlog,
+  updateBlog,
 };
