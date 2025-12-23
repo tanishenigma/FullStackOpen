@@ -1,0 +1,41 @@
+const Blog = require("../models/blog.model");
+
+const getBlogs = async (req, res, next) => {
+  try {
+    const blogs = await Blog.find({});
+    res.json(blogs);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const createBlogs = async (req, res, next) => {
+  const body = req.body;
+  try {
+    const blog = new Blog({
+      title: body.title,
+      author: body.author,
+      body: body.content,
+    });
+
+    const savedBlog = await blog.save();
+    res.json(savedBlog);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const removeBlog = async (req, res, next) => {
+  try {
+    await Blog.findByIdAndDelete(req.params.id);
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  getBlogs,
+  createBlogs,
+  removeBlog,
+};
