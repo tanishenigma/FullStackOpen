@@ -15,11 +15,11 @@ const createBlogs = async (req, res, next) => {
     const blog = new Blog({
       title: body.title,
       author: body.author,
-      body: body.content,
+      content: body.content,
     });
 
     const savedBlog = await blog.save();
-    res.json(savedBlog);
+    res.status(201).json(savedBlog);
   } catch (error) {
     next(error);
   }
