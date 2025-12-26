@@ -6,7 +6,7 @@ const blogSchema = new mongoose.Schema({
   content: String,
   date: { type: Date, default: Date.now },
   meta: {
-    likes: Number,
+    likes: { type: Number, default: 0 },
     bookmarks: Number,
   },
   user: {
@@ -14,7 +14,13 @@ const blogSchema = new mongoose.Schema({
     ref: "User",
   },
 });
-
+blogSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
 const Blog = mongoose.model("Blog", blogSchema);
 
 module.exports = Blog;
