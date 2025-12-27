@@ -17,7 +17,7 @@ const Blog = mongoose.model("Blog", blogSchema);
 const blog = new Blog({
   title: "Why HTML is easy",
   author: "Edsger W. Dijkstra",
-  content: "HTML is easy because it is markup, not logic.",
+  url: "HTML is easy because it is markup, not logic.",
 });
 
 blog.save().then(() => {

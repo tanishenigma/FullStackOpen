@@ -1,4 +1,5 @@
 const Blog = require("../models/blog.model");
+const middleware = require("../utils/middleware");
 
 const getBlogs = async (req, res, next) => {
   try {
@@ -15,7 +16,7 @@ const createBlogs = async (req, res, next) => {
     const blog = new Blog({
       title: body.title,
       author: body.author,
-      content: body.content,
+      url: body.url,
     });
 
     const savedBlog = await blog.save();
@@ -38,8 +39,7 @@ const updateBlog = async (req, res, next) => {
   const body = req.body;
   const blogData = {
     title: body.title,
-    content: body.content,
-    meta: body.meta,
+    url: body.url,
   };
   try {
     const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, {
