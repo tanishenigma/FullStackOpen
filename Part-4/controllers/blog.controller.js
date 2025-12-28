@@ -1,9 +1,12 @@
 const Blog = require("../models/blog.model");
-const middleware = require("../utils/middleware");
+const User = require("../models/user.model");
 
 const getBlogs = async (req, res, next) => {
   try {
-    const blogs = await Blog.find({});
+    const blogs = await Blog.find({}).populate("user", {
+      username: 1,
+      name: 1,
+    });
     res.json(blogs);
   } catch (error) {
     next(error);
@@ -12,11 +15,18 @@ const getBlogs = async (req, res, next) => {
 
 const createBlogs = async (req, res, next) => {
   const body = req.body;
+  const user = await User.findById(body.userId);
+
+  if (!user) {
+    return res.status(400).json({ error: "userId missing or not valid" });
+  }
+
   try {
     const blog = new Blog({
       title: body.title,
       author: body.author,
       url: body.url,
+      user: user._id,
     });
 
     const savedBlog = await blog.save();
@@ -42,7 +52,7 @@ const updateBlog = async (req, res, next) => {
     url: body.url,
   };
   try {
-    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blog, {
+    const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blogData, {
       new: true,
     });
     res.json(updatedBlog);

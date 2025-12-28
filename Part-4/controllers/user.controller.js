@@ -25,8 +25,8 @@ const createUser = async (req, res, next) => {
       passwordHash,
     });
     const savedUser = await newUser.save();
-    res.send(savedUser);
     res.status(201).json({ message: "User Created Successfully!" });
+    res.send(savedUser);
   } catch (error) {
     next(error);
   }
