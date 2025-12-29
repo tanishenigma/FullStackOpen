@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
+  email: { type: String, unique: true },
   passwordHash: { type: String, minlength: 8 },
   blogs: {
     type: mongoose.Schema.Types.ObjectId,
