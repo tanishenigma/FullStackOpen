@@ -1,5 +1,14 @@
+const jwt = require("jsonwebtoken");
 const Blog = require("../models/blog.model");
 const User = require("../models/user.model");
+
+const getTokenFrom = (req) => {
+  const authorization = req.get("authorization");
+  if (authorization && authorization.startsWith("Bearer ")) {
+    return authorization.replace("Bearer ", "");
+  }
+  return null;
+};
 
 const getBlogs = async (req, res, next) => {
   try {
@@ -15,13 +24,17 @@ const getBlogs = async (req, res, next) => {
 
 const createBlogs = async (req, res, next) => {
   const body = req.body;
-  const user = await User.findById(body.userId);
-
-  if (!user) {
-    return res.status(400).json({ error: "userId missing or not valid" });
-  }
-
   try {
+    const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET);
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: "token invalid" });
+    }
+    const user = await User.findById(decodedToken.id);
+
+    if (!user) {
+      return res.status(400).json({ error: "userId missing or not valid" });
+    }
+
     const blog = new Blog({
       title: body.title,
       author: body.author,
