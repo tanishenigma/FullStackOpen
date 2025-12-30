@@ -11,9 +11,14 @@ const getUser = async (req, res, next) => {
 };
 const createUser = async (req, res, next) => {
   const { username, email, password } = req.body;
-  if (!password || password.length < 8) {
+  if (!password || password.length < 3) {
     return res.status(400).json({
-      error: "Password must be at least 8 characters long",
+      error: "Password must be at least 3 characters long",
+    });
+  }
+  if (!username || username.length < 3) {
+    return res.status(400).json({
+      error: "Username must be at least 3 characters long",
     });
   }
   try {
