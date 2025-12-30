@@ -12,10 +12,7 @@ const getTokenFrom = (req) => {
 
 const getBlogs = async (req, res, next) => {
   try {
-    const blogs = await Blog.find({}).populate("user", {
-      username: 1,
-      name: 1,
-    });
+    const blogs = await Blog.find({}).populate("user");
     res.json(blogs);
   } catch (error) {
     next(error);
@@ -43,6 +40,8 @@ const createBlogs = async (req, res, next) => {
     });
 
     const savedBlog = await blog.save();
+    user.blogs.push(savedBlog._id);
+    await user.save();
     res.status(201).json(savedBlog);
   } catch (error) {
     next(error);
