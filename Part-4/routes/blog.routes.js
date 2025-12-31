@@ -7,6 +7,7 @@ const {
 const blogRouter = require("express").Router();
 
 blogRouter.get("/", getBlogs);
+blogRouter.get("/:id", getBlogs);
 blogRouter.post("/", createBlogs);
 blogRouter.delete("/:id", removeBlog);
 blogRouter.put("/:id", updateBlog);
