@@ -15,7 +15,6 @@ mongoose
 
 app.use(express.json());
 app.use(middleware.requestLogger);
-app.use(middleware.tokenExtractor);
 
 app.use("/api/users", userRouter);
 app.use("/api/blogs", blogRouter);
