@@ -3,9 +3,11 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
 require("dotenv").config();
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({
+    $or: [{ username: username }, { email: email }],
+  });
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.passwordHash);
 
@@ -23,6 +25,13 @@ const login = async (req, res) => {
     expiresIn: 60 * 60,
   });
 
-  res.status(200).send({ token, username: user.username, name: user.name });
+  res
+    .status(200)
+    .send({
+      token,
+      username: user.username,
+      name: user.name,
+      email: user.email,
+    });
 };
 module.exports = login;
