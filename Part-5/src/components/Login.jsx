@@ -31,7 +31,18 @@ const Login = ({ user, setUser }) => {
   return (
     <div>
       <form onSubmit={loginHandler}>
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}{" "}
+        {errorMessage && (
+          <p
+            style={{
+              color: "red",
+              background: "#D3D3D3",
+              padding: "10px",
+              border: "5px solid red",
+              borderRadius: "8px",
+            }}>
+            {errorMessage}
+          </p>
+        )}{" "}
         <div>
           <label>Username</label>
           <input

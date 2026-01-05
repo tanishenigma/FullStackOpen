@@ -3,13 +3,16 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
+import BlogForm from "./components/BlogForm";
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
+  const [newBlog, setNewBlog] = useState(null);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+  }, [newBlog]);
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("UserLogged");
     if (loggedUserJSON) {
@@ -27,6 +30,7 @@ const App = () => {
           <h2>blogs</h2>
           <p>{user.username} logged in</p>
           <Logout />
+          <BlogForm newBlog={newBlog} setNewBlog={setNewBlog} />
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
