@@ -55,6 +55,8 @@ const updateBlog = async (req, res, next) => {
   const blogData = {
     title: body.title,
     url: body.url,
+    likes: body.likes,
+    author: body.author,
   };
   try {
     const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, blogData, {

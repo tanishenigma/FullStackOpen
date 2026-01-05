@@ -19,6 +19,7 @@ app.use(middleware.requestLogger);
 app.use(cors());
 
 app.use("/api/users", userRouter);
+app.use("/api/users/:id", userRouter);
 app.use("/api/blogs", blogRouter);
 app.use("/api/login", loginRouter);
 

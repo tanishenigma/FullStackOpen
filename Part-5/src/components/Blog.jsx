@@ -1,6 +1,6 @@
 import { useState } from "react";
-
-const Blog = ({ blog }) => {
+import blogServices from "../services/blogs";
+const Blog = ({ blog, user }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -9,12 +9,54 @@ const Blog = ({ blog }) => {
     marginBottom: 5,
   };
   const [view, setView] = useState(false);
-  console.log(view);
+  const [likes, setLikes] = useState(blog.likes);
+
+  // const likeHandler = async (e, id) => {
+  //   e.preventDefault();
+  //   const updatedLikes = likes + 1;
+  //   setLikes(updatedLikes);
+
+  //   try {
+  //     const blogid = id;
+  //     const response = {
+  //       ...blog,
+  //       likes: updatedLikes,
+  //     };
+  //     await blogServices.like(blogid, response);
+  //   } catch (error) {
+  //     setLikes(likes);
+  //     console.error("Failed to like blog", error);
+  //   }
+  // };
+  const handleDelete = (e) => {
+    e.preventDefault();
+    window.confirm(`Remove blog ${blog.title} by ${blog.author}`);
+  };
+
+  const likeHandler = async (e) => {
+    e.preventDefault();
+    setLikes(likes + 1);
+    if (!user) {
+      alert("You must be logged in to like posts!");
+      return;
+    }
+    const updatedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+    };
+    try {
+      await blogServices.like(blog.id, updatedBlog);
+    } catch (error) {
+      console.error("Like failed, reverting UI", error);
+      setLikes(likes);
+    }
+  };
+
   return (
     <>
       {!view && (
         <div style={blogStyle}>
-          {blog.title + " "}{" "}
+          {blog.title + " "}
           <button
             onClick={() => {
               setView(!view);
@@ -40,11 +82,23 @@ const Blog = ({ blog }) => {
               hide
             </button>
           </div>
+          <div> URL: {blog.url}</div>
+          <div>
+            Likes: {likes} <button onClick={likeHandler}>like</button>
+          </div>
           <div>Author: {blog.author}</div>
           <div>
-            Likes: {blog.likes} <button>like</button>
+            <button
+              style={{
+                background: "#4286F6",
+                border: "0px",
+                borderRadius: "2px",
+                marginBottom: "4px",
+              }}
+              onClick={handleDelete}>
+              remove
+            </button>
           </div>
-          <div> URL: {blog.url}</div>
         </div>
       )}
     </>

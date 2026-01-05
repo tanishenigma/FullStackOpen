@@ -31,7 +31,7 @@ const App = () => {
         <Logout />
         <BlogForm newBlog={newBlog} setNewBlog={setNewBlog} />
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} user={user} />
         ))}
       </>
     );
@@ -42,7 +42,7 @@ const App = () => {
         <button onClick={() => setShowLogin(!showLogin)}>Cancel</button>
         <h3>Blogs</h3>
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} user={user} />
         ))}
       </>
     );
@@ -52,7 +52,7 @@ const App = () => {
         <button onClick={() => setShowLogin(!showLogin)}>Login</button>
         <h3>Blogs</h3>
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog key={blog.id} blog={blog} user={user} />
         ))}
       </>
     );

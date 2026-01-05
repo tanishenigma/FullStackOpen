@@ -15,14 +15,18 @@ const BlogForm = ({ setNewBlog }) => {
     const createdBlog = await blogService.create(response);
     setNewBlog(createdBlog);
     setCreateMessage("A new blog " + response.title + " by " + response.author);
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+    setTimeout(() => {
+      setCreateMessage(null);
+    }, 10000);
   };
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
   const [create, setCreate] = useState(false);
-  setTimeout(() => {
-    setCreateMessage(null);
-  }, 10000);
+
   return (
     <div>
       {createMessage && (
@@ -50,7 +54,7 @@ const BlogForm = ({ setNewBlog }) => {
           <label>Titile:</label>
           <input
             type="text"
-            name={title}
+            name="title"
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
@@ -60,7 +64,7 @@ const BlogForm = ({ setNewBlog }) => {
           <label>Author:</label>
           <input
             type="text"
-            name={author}
+            name="author"
             value={author}
             onChange={(e) => {
               setAuthor(e.target.value);
@@ -69,7 +73,7 @@ const BlogForm = ({ setNewBlog }) => {
           <br />
           <label>Url:</label>
           <input
-            name={url}
+            name="url"
             value={url}
             onChange={(e) => {
               setUrl(e.target.value);
