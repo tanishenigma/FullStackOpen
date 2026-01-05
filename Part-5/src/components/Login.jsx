@@ -30,6 +30,7 @@ const Login = ({ user, setUser }) => {
   };
   return (
     <div>
+      <h1>Login</h1>
       <form onSubmit={loginHandler}>
         {errorMessage && (
           <p
