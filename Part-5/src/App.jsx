@@ -1,31 +1,31 @@
-import { useState, useEffect } from "react";
-import blogService from "./services/blogs";
-import Blog from "./components/Blog";
-import Login from "./components/Login";
-import Logout from "./components/Logout";
-import BlogForm from "./components/BlogForm";
+import { useState, useEffect } from 'react'
+import blogService from './services/blogs'
+import Blog from './components/Blog'
+import Login from './components/Login'
+import Logout from './components/Logout'
+import BlogForm from './components/BlogForm'
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState(null);
-  const [newBlog, setNewBlog] = useState(null);
-  const [showLogin, setShowLogin] = useState(true);
+  const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useState(null)
+  const [newBlog, setNewBlog] = useState(null)
+  const [showLogin, setShowLogin] = useState(true)
 
   const removeOnDelte = (id) => {
-    setBlogs(blogs.filter((blog) => blog.id !== id));
-  };
+    setBlogs(blogs.filter((blog) => blog.id !== id))
+  }
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, [newBlog]);
+    blogService.getAll().then((blogs) => setBlogs(blogs))
+  }, [newBlog])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("UserLogged");
+    const loggedUserJSON = window.localStorage.getItem('UserLogged')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
     }
-  }, []);
-  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+  }, [])
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
   if (user) {
     return (
       <>
@@ -37,7 +37,7 @@ const App = () => {
           <Blog key={blog.id} blog={blog} user={user} />
         ))}
       </>
-    );
+    )
   } else if (!user && !showLogin) {
     return (
       <>
@@ -48,7 +48,7 @@ const App = () => {
           <Blog key={blog.id} blog={blog} user={user} />
         ))}
       </>
-    );
+    )
   } else {
     return (
       <>
@@ -63,8 +63,8 @@ const App = () => {
           />
         ))}
       </>
-    );
+    )
   }
-};
+}
 
-export default App;
+export default App

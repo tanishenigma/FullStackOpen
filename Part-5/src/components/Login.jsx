@@ -1,33 +1,33 @@
-import React, { useState } from "react";
-import loginService from "../services/login";
-import BlogService from "../services/blogs";
+import React, { useState } from 'react'
+import loginService from '../services/login'
+import BlogService from '../services/blogs'
 
-const Login = ({ user, setUser }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
+const Login = ({ setUser }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const loginHandler = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       const user = await loginService.login({
         username,
         email,
         password,
-      });
-      window.localStorage.setItem("UserLogged", JSON.stringify(user));
-      BlogService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
+      })
+      window.localStorage.setItem('UserLogged', JSON.stringify(user))
+      BlogService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
     } catch {
-      setErrorMessage("Wrong Credentials");
+      setErrorMessage('Wrong Credentials')
       setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+        setErrorMessage(null)
+      }, 5000)
     }
-  };
+  }
   return (
     <div>
       <h1>Login</h1>
@@ -35,15 +35,16 @@ const Login = ({ user, setUser }) => {
         {errorMessage && (
           <p
             style={{
-              color: "red",
-              background: "#D3D3D3",
-              padding: "10px",
-              border: "5px solid red",
-              borderRadius: "8px",
-            }}>
+              color: 'red',
+              background: '#D3D3D3',
+              padding: '10px',
+              border: '5px solid red',
+              borderRadius: '8px',
+            }}
+          >
             {errorMessage}
           </p>
-        )}{" "}
+        )}{' '}
         <div>
           <label>Username</label>
           <input
@@ -66,7 +67,7 @@ const Login = ({ user, setUser }) => {
         <button type="Submit">Submit</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

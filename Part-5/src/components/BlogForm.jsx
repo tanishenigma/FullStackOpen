@@ -1,51 +1,53 @@
-import React from "react";
-import { useState } from "react";
-import blogService from "../services/blogs";
+import React from 'react'
+import { useState } from 'react'
+import blogService from '../services/blogs'
 
 const BlogForm = ({ setNewBlog }) => {
-  const [createMessage, setCreateMessage] = useState("");
+  const [createMessage, setCreateMessage] = useState('')
 
   const createBlog = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const response = {
       title,
       author,
       url,
-    };
-    const createdBlog = await blogService.create(response);
-    setNewBlog(createdBlog);
-    setCreateMessage("A new blog " + response.title + " by " + response.author);
-    setTitle("");
-    setAuthor("");
-    setUrl("");
+    }
+    const createdBlog = await blogService.create(response)
+    setNewBlog(createdBlog)
+    setCreateMessage('A new blog ' + response.title + ' by ' + response.author)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
     setTimeout(() => {
-      setCreateMessage(null);
-    }, 10000);
-  };
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
-  const [create, setCreate] = useState(false);
+      setCreateMessage(null)
+    }, 10000)
+  }
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+  const [create, setCreate] = useState(false)
 
   return (
     <div>
       {createMessage && (
         <p
           style={{
-            color: "#027D02",
-            background: "#D3D3D3",
-            padding: "10px",
-            border: "5px solid #027D02",
-            borderRadius: "8px",
-          }}>
+            color: '#027D02',
+            background: '#D3D3D3',
+            padding: '10px',
+            border: '5px solid #027D02',
+            borderRadius: '8px',
+          }}
+        >
           {createMessage}
         </p>
       )}
       {create && (
         <button
           onClick={() => {
-            setCreate(!create);
-          }}>
+            setCreate(!create)
+          }}
+        >
           Create new blog
         </button>
       )}
@@ -57,7 +59,7 @@ const BlogForm = ({ setNewBlog }) => {
             name="title"
             value={title}
             onChange={(e) => {
-              setTitle(e.target.value);
+              setTitle(e.target.value)
             }}
           />
           <br />
@@ -67,7 +69,7 @@ const BlogForm = ({ setNewBlog }) => {
             name="author"
             value={author}
             onChange={(e) => {
-              setAuthor(e.target.value);
+              setAuthor(e.target.value)
             }}
           />
           <br />
@@ -76,7 +78,7 @@ const BlogForm = ({ setNewBlog }) => {
             name="url"
             value={url}
             onChange={(e) => {
-              setUrl(e.target.value);
+              setUrl(e.target.value)
             }}
           />
           <br />
@@ -86,13 +88,14 @@ const BlogForm = ({ setNewBlog }) => {
       {!create && (
         <button
           onClick={() => {
-            setCreate(!create);
-          }}>
+            setCreate(!create)
+          }}
+        >
           Cancel
         </button>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default BlogForm;
+export default BlogForm
