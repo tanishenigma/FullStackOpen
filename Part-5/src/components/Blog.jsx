@@ -1,6 +1,6 @@
 import { useState } from "react";
 import blogServices from "../services/blogs";
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, user, removeBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -10,27 +10,17 @@ const Blog = ({ blog, user }) => {
   };
   const [view, setView] = useState(false);
   const [likes, setLikes] = useState(blog.likes);
+  const showRemove = user && blog.user && user.username === blog.user.username;
 
-  // const likeHandler = async (e, id) => {
-  //   e.preventDefault();
-  //   const updatedLikes = likes + 1;
-  //   setLikes(updatedLikes);
-
-  //   try {
-  //     const blogid = id;
-  //     const response = {
-  //       ...blog,
-  //       likes: updatedLikes,
-  //     };
-  //     await blogServices.like(blogid, response);
-  //   } catch (error) {
-  //     setLikes(likes);
-  //     console.error("Failed to like blog", error);
-  //   }
-  // };
-  const handleDelete = (e) => {
+  const handleDelete = async (e) => {
     e.preventDefault();
     window.confirm(`Remove blog ${blog.title} by ${blog.author}`);
+    try {
+      await blogServices.remove(blog.id);
+      removeBlog(blog.id);
+    } catch (error) {
+      error("Unable to delete at this moment");
+    }
   };
 
   const likeHandler = async (e) => {
@@ -87,18 +77,20 @@ const Blog = ({ blog, user }) => {
             Likes: {likes} <button onClick={likeHandler}>like</button>
           </div>
           <div>Author: {blog.author}</div>
-          <div>
-            <button
-              style={{
-                background: "#4286F6",
-                border: "0px",
-                borderRadius: "2px",
-                marginBottom: "4px",
-              }}
-              onClick={handleDelete}>
-              remove
-            </button>
-          </div>
+          {showRemove && (
+            <div>
+              <button
+                style={{
+                  background: "#4286F6",
+                  border: "0px",
+                  borderRadius: "2px",
+                  marginBottom: "4px",
+                }}
+                onClick={handleDelete}>
+                remove
+              </button>
+            </div>
+          )}
         </div>
       )}
     </>

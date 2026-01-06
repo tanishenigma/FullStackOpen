@@ -10,6 +10,9 @@ const App = () => {
   const [newBlog, setNewBlog] = useState(null);
   const [showLogin, setShowLogin] = useState(true);
 
+  const removeOnDelte = (id) => {
+    setBlogs(blogs.filter((blog) => blog.id !== id));
+  };
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, [newBlog]);
@@ -22,7 +25,7 @@ const App = () => {
       blogService.setToken(user.token);
     }
   }, []);
-
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
   if (user) {
     return (
       <>
@@ -30,7 +33,7 @@ const App = () => {
         <p>{user.username} logged in</p>
         <Logout />
         <BlogForm newBlog={newBlog} setNewBlog={setNewBlog} />
-        {blogs.map((blog) => (
+        {sortedBlogs.map((blog) => (
           <Blog key={blog.id} blog={blog} user={user} />
         ))}
       </>
@@ -41,7 +44,7 @@ const App = () => {
         <Login user={user} setUser={setUser} />
         <button onClick={() => setShowLogin(!showLogin)}>Cancel</button>
         <h3>Blogs</h3>
-        {blogs.map((blog) => (
+        {sortedBlogs.map((blog) => (
           <Blog key={blog.id} blog={blog} user={user} />
         ))}
       </>
@@ -51,8 +54,13 @@ const App = () => {
       <>
         <button onClick={() => setShowLogin(!showLogin)}>Login</button>
         <h3>Blogs</h3>
-        {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} user={user} />
+        {sortedBlogs.map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            user={user}
+            removeBlog={removeOnDelte}
+          />
         ))}
       </>
     );
